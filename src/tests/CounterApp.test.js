@@ -13,10 +13,14 @@ import { shallow } from 'enzyme'
 */
 
 describe('Pruebas sobre CounterApp', () => { 
-    
+    let wrapper;
+
+    beforeEach( () => {
+        wrapper = shallow(<CounterApp />);
+    });
+
+
     test('Debe mostrar <CounterApp /> correctamente', () => { 
-        
-        const wrapper = shallow(<CounterApp />);
 
         expect( wrapper ).toMatchSnapshot();
 
@@ -35,6 +39,39 @@ describe('Pruebas sobre CounterApp', () => {
         const valor = wrapper.find('h2').text();
 
         expect( valor ).toBe( '100' );
+
+    });
+
+    test('Debe de incrementar con el botón de +1', () => { 
+
+        wrapper.find('button').at(0).simulate('click');
+        
+        const counterText = wrapper.find('h2').text();
+
+        expect(counterText).toBe('11');
+
+     });
+
+     test('Debe de decrementar con el botón de -1', () => { 
+ 
+         wrapper.find('button').at(1).simulate('click');
+         
+         const counterText = wrapper.find('h2').text();
+ 
+         expect(counterText).toBe('9');
+ 
+      });
+
+    test('Debe de resetear con el botón de reset', () => { 
+
+        const wrapper = shallow( <CounterApp value={ 105 }/> );
+        
+        wrapper.find('button').at(1).simulate('click');
+        wrapper.find('button').at(2).simulate('click');
+
+        const counterText = wrapper.find('h2').text();
+
+        expect(counterText).toBe('105');
 
     });
  });
